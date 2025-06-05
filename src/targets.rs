@@ -704,6 +704,7 @@ pub enum OperatingSystem {
     Windows,
     /// An alternate name for [visionOS][Self::VisionOS].
     XROS(Option<DeploymentTarget>),
+    Nanvix,
 }
 
 impl OperatingSystem {
@@ -764,6 +765,7 @@ impl OperatingSystem {
             WatchOS(deployment_target) => darwin_version("watchos", deployment_target),
             Windows => Cow::Borrowed("windows"),
             XROS(deployment_target) => darwin_version("xros", deployment_target),
+            Nanvix => Cow::Borrowed("nanvix"),
         }
     }
 
@@ -1568,6 +1570,7 @@ impl FromStr for OperatingSystem {
             "wasip2" => WasiP2,
             "windows" => Windows,
             "espidf" => Espidf,
+            "nanvix" => Nanvix,
             _ => return Err(()),
         })
     }
