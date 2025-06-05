@@ -24,5 +24,9 @@ std = []
 # Enable (unstable) support for the zkasm architecture.
 arch_zkasm = []
 
+# The following features a provided to support older versions of Rust.
+rust_1_40 = []
+cargo-clippy = []
+
 [badges]
 maintenance = { status = "passively-maintained" }
