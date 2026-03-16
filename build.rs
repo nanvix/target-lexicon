@@ -49,7 +49,18 @@ fn main() {
     );
     let target = env::var("TARGET").expect("The TARGET environment variable must be set");
     let triple =
-        Triple::from_str(&target).unwrap_or_else(|_| panic!("Invalid target name: '{}'", target));
+        Triple::from_str(&target).unwrap_or_else(|_| {
+            // When using a custom JSON target spec (e.g. --target path/to/x86-user.json),
+            // Cargo sets TARGET to the filename stem (e.g. "x86-user") which may not be
+            // a valid triple. Fall back to Unknown fields rather than panicking.
+            Triple {
+                architecture: targets::Architecture::Unknown,
+                vendor: targets::Vendor::Unknown,
+                operating_system: targets::OperatingSystem::Unknown,
+                environment: targets::Environment::Unknown,
+                binary_format: targets::BinaryFormat::Unknown,
+            }
+        });
     let out = File::create(out_dir.join("host.rs")).expect("error creating host.rs");
     write_host_rs(out, triple).expect("error writing host.rs");
     if using_1_40() {
